@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient and Doctor Login</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+    background-image: url('C:\\Users\\dulek\\Downloads\\hospital-background.jpg');
+    background-size: cover;
+  }
+  .background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 163, 209, 0.5);
+    z-index: -1;
+  }
+  .container {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1;
+    position: relative;
+  }
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .lang-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1;
+    cursor: pointer;
+    background-color: transparent;
+    color: #000000;
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+  .lang-options {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 5px 10px;
+  }
+  .lang-options.active {
+    display: block;
+  }
+  .lang-option {
+    display: block;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  .logo {
+    position: absolute;
+    top: -250px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 225px;
+    z-index: -1;
+}
+.form-container {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.form-container.active {
+  display: block;
+}
+.form-input {
+  display: block;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+<body>
+<div class="background-overlay"></div>
+<div class="container">
+  <button class="btn" onclick="toggleForm('patientForm')">Hasta Girişi</button>
+  <button class="btn" onclick="doctorLogin()">Doktor Girişi</button>
+  <img src="C:\\Users\\dulek\\Downloads\\carepoint-logo.png" alt="CarePoint Logo" class="logo">
+</div>
+<div class="form-container" id="patientForm">
+  <form>
+    <input type="text" class="form-input" placeholder="TC Kimlik Numarası">
+    <input type="password" class="form-input" placeholder="Şifre">
+    <button type="submit" class="btn">Giriş Yap</button>
+  </form>
+</div>
+<div class="lang-selector" onclick="toggleLanguage()"><span id="langText">English</span></div>
+
+<script>
+  let currentLanguage = 'tr';
+
+  function toggleLanguage() {
+    currentLanguage = currentLanguage === 'en' ? 'tr' : 'en';
+    updateLanguageDisplay();
+  }
+  
+  function updateLanguageDisplay() {
+    const elementsToTranslate = document.querySelectorAll('[data-lang]');
+    elementsToTranslate.forEach(element => {
+      const key = element.getAttribute('data-lang');
+      if (translations[currentLanguage] && translations[currentLanguage][key]) {
+        if (key === 'patientLogin') {
+          element.textContent = translations[currentLanguage][key];
+        } else {
+          element.textContent = translations[currentLanguage][key];
+        }
+      }
+    });
+    document.getElementById('langText').textContent = currentLanguage === 'en' ? 'English' : 'Türkçe';
+  }
+  
+  function patientLogin() {
+    alert(translations[currentLanguage]['patientLogin']);
+  }
+  
+  function doctorLogin() {
+    alert(translations[currentLanguage]['doctorLogin']);
+  }
+
+  function toggleForm(formId) {
+    const form = document.getElementById(formId);
+    form.classList.toggle('active');
+  }
+  
+  const translations = {
+    'en': {
+      'patientLogin': 'Patient Login',
+      'doctorLogin': 'Doctor Login',
+      'turkish': 'Türkçe',
+      'english': 'English',
+    },
+    'tr': {
+      'patientLogin': 'Hasta Girişi',
+      'doctorLogin': 'Doktor Girişi',
+      'turkish': 'Türkçe',
+      'english': 'English',
+    }
+  };
+  
+  updateLanguageDisplay();
+</script>
+</body>
+</html>
