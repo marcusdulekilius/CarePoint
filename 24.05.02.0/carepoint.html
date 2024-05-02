@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient and Doctor Login</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    position: relative; /* Arka planı belirli bir renk ile doldurmak için */
+    background-image: url('C:\\Users\\dulek\\Downloads\\hospital-background.jpg'); /* Arka plan resmi */
+    background-size: cover;
+  }
+  .background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 163, 209, 0.5); /* Mavi renk efekti (RGBA formatında, 0.5 opaklık) */
+    z-index: -1; /* Arka plandan aşağıda */
+  }
+  .container {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1; /* Ön planda */
+  }
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .lang-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    z-index: 1; /* Ön planda */
+  }
+</style>
+</head>
+<body>
+<div class="background-overlay"></div> <!-- Renk efekti için overlay divi -->
+<div class="container">
+  <h1>Patient and Doctor Login</h1>
+  <button class="btn" onclick="patientLogin()">Patient Login</button>
+  <button class="btn" onclick="doctorLogin()">Doctor Login</button>
+</div>
+<div id="languageSelector" class="lang-btn" onclick="toggleLanguage()">English</div>
+
+<script>
+  let currentLanguage = 'en';
+
+  function toggleLanguage() {
+    const languageSelector = document.getElementById('languageSelector');
+    if (currentLanguage === 'en') {
+      currentLanguage = 'tr';
+      languageSelector.textContent = 'Türkçe';
+      changeTextToTurkish();
+    } else {
+      currentLanguage = 'en';
+      languageSelector.textContent = 'English';
+      changeTextToEnglish();
+    }
+  }
+
+  function changeTextToTurkish() {
+    const patientBtn = document.querySelector('.btn:nth-of-type(1)');
+    const doctorBtn = document.querySelector('.btn:nth-of-type(2)');
+    patientBtn.textContent = 'Hasta Girişi';
+    doctorBtn.textContent = 'Doktor Girişi';
+    document.querySelector('h1').textContent = 'Hasta ve Doktor Girişi';
+  }
+
+  function changeTextToEnglish() {
+    const patientBtn = document.querySelector('.btn:nth-of-type(1)');
+    const doctorBtn = document.querySelector('.btn:nth-of-type(2)');
+    patientBtn.textContent = 'Patient Login';
+    doctorBtn.textContent = 'Doctor Login';
+    document.querySelector('h1').textContent = 'Patient and Doctor Login';
+  }
+
+  function patientLogin() {
+    alert('Patient Login');
+  }
+
+  function doctorLogin() {
+    alert('Doctor Login');
+  }
+</script>
+</body>
+</html>
