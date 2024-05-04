@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CarePoint</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+    background-image: url('C:\\Users\\dulek\\Downloads\\hospital-background.jpg');
+    background-size: cover;
+  }
+  .background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 163, 209, 0.5);
+    z-index: -1;
+  }
+  .container {
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1;
+    position: relative;
+  }
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .lang-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1;
+    cursor: pointer;
+    background-color: transparent;
+    color: #000000;
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+  .logo {
+    position: absolute;
+    top: -250px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 225px;
+    z-index: -1;
+  }
+  .form-container {
+    display: none;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  .form-container.active {
+    display: block;
+  }
+  .form-input {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+</style>
+</head>
+<body>
+<div class="background-overlay"></div>
+<div class="container" id="buttonContainer">
+  <button class="btn" onclick="toggleForm('patientForm')">Hasta Girişi</button>
+  <button class="btn" onclick="doctorLogin()">Doktor Girişi</button>
+  <img src="C:\\Users\\dulek\\Downloads\\carepoint-logo.png" alt="CarePoint Logo" class="logo">
+</div>
+<div class="form-container" id="patientForm">
+  <img src="C:\\Users\\dulek\\Downloads\\carepoint-logo.png" alt="CarePoint Logo" class="logo">
+  <form onsubmit="return patientLogin();">
+    <input type="text" class="form-input" id="tcInput" placeholder="TC Kimlik Numarası" maxlength="11">
+    <input type="password" class="form-input" id="passwordInput" placeholder="Şifre">
+    <button type="submit" class="btn">Giriş</button>
+    <button type="button" class="btn" onclick="toggleForm('registerForm')">Kayıt Ol</button>
+    <div class="error-message" id="loginError"></div>
+  </form>
+</div>
+<div class="form-container" id="registerForm">
+  <img src="C:\\Users\\dulek\\Downloads\\carepoint-logo.png" alt="CarePoint Logo" class="logo">
+  <form onsubmit="return registerUser();">
+    <input type="text" class="form-input" id="firstNameInput" placeholder="Ad">
+    <input type="text" class="form-input" id="lastNameInput" placeholder="Soyad">
+    <input type="text" class="form-input" id="tcInputRegister" placeholder="TC Kimlik Numarası" maxlength="11">
+    <input type="password" class="form-input" id="passwordInputRegister" placeholder="Şifre">
+    <button type="submit" class="btn">Kayıt Ol</button>
+    <div class="error-message" id="registerError"></div>
+  </form>
+</div>
+<div class="lang-selector" onclick="toggleLanguage()"><span id="langText">English</span></div>
+
+<script>
+  let currentLanguage = 'tr';
+  let registeredUsers = []; // Kullanıcıları şimdilik arrayde tutalım Anıl
+
+  function toggleLanguage() {
+    currentLanguage = currentLanguage === 'en' ? 'tr' : 'en';
+    updateLanguageDisplay();
+  }
+
+  function updateLanguageDisplay() {
+    const elementsToTranslate = document.querySelectorAll('[data-lang]');
+    elementsToTranslate.forEach(element => {
+      const key = element.getAttribute('data-lang');
+      if (translations[currentLanguage] && translations[currentLanguage][key]) {
+        element.textContent = translations[currentLanguage][key];
+      }
+    });
+    document.getElementById('langText').textContent = currentLanguage === 'en' ? 'English' : 'Türkçe';
+  }
+
+  function patientLogin() {
+    const tcInput = document.getElementById('tcInput').value.trim();
+    const passwordInput = document.getElementById('passwordInput').value.trim();
+    const loginError = document.getElementById('loginError');
+
+    // TC alanı için kontrol
+    const isValidTC = /^\d{11}$/.test(tcInput); // TC'nin doğru formatta olup olmadığını kontrol et
+    if (!isValidTC) {
+        loginError.textContent = 'TC Kimlik Numarası sadece 11 basamaktan oluşan bir sayı olmalıdır.';
+        return false;
+    }
+    // TC ve şifre doğru mu bakalım bi
+    if (tcInput === '' || passwordInput === '') {
+      loginError.textContent = 'TC Kimlik Numarası ve Şifre boş olamaz.';
+      return false;
+    }
+
+    // Kayıtlı mısın kontrol edek
+    const user = registeredUsers.find(u => u.tc === tcInput && u.password === passwordInput);
+    if (user) {
+      loginError.textContent = '';
+      alert('Hoşgeldiniz ' + user.firstName.toUpperCase() + ' ' + user.lastName.toUpperCase());
+      return true;
+    } else {
+      loginError.textContent = 'Giriş bilgileri geçersiz.';
+      return false;
+    }
+  }
+
+  function doctorLogin() {
+    alert(translations[currentLanguage]['doctorLogin']);
+  }
+
+  function toggleForm(formId) {
+    const forms = document.querySelectorAll('.form-container');
+    forms.forEach(form => {
+      if (form.id === formId) {
+        form.style.display = 'block';
+        document.getElementById('buttonContainer').style.display = 'none';
+      } else {
+        form.style.display = 'none';
+      }
+    });
+  }
+
+  function registerUser() {
+    const firstName = document.getElementById('firstNameInput').value.trim().toUpperCase();
+    const lastName = document.getElementById('lastNameInput').value.trim().toUpperCase();
+    const tcInput = document.getElementById('tcInputRegister');
+    const password = document.getElementById('passwordInputRegister').value.trim();
+    const registerError = document.getElementById('registerError');
+
+    // TC alanı için kontrol
+    const tcValue = tcInput.value.trim();
+    const isValidTC = /^\d{11}$/.test(tcValue); // TC'nin doğru formatta olup olmadığını kontrol et
+    if (!isValidTC) {
+        registerError.textContent = 'TC Kimlik Numarası sadece 11 basamaktan oluşan bir sayı olmalıdır.';
+        return false;
+    }
+
+    // Her şeyi yazdın mı cheeeeeck
+    if (firstName === '' || lastName === '' || tc === '' || password === '') {
+      registerError.textContent = 'Lütfen tüm alanları doldurun.';
+      return false;
+    }
+
+    // TC çalıntı mı
+    if (registeredUsers.some(u => u.tc === tc)) {
+      registerError.textContent = 'Bu TC zaten kayıtlı.';
+      return false;
+    }
+
+    // Şifre kontrolleri
+    const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/;
+    if (!passwordRegex.test(password)) {
+      registerError.textContent = 'Şifre en az 8 karakterden oluşmalı ve en az bir rakam ve bir noktalama işareti içermelidir.';
+      return false;
+    }
+
+    // Kullanıcı ekle artık
+    registeredUsers.push({ firstName, lastName, tc, password });
+    registerError.textContent = ''; 
+    alert('Kayıt başarılı! Şimdi giriş yapabilirsiniz.');
+    toggleForm('patientForm');
+    return false; 
+  }
+
+  const translations = {
+    'en': {
+      'patientLogin': 'Patient Login',
+      'doctorLogin': 'Doctor Login',
+      'turkish': 'Türkçe',
+      'english': 'English',
+    },
+    'tr': {
+      'patientLogin': 'Hasta Girişi',
+      'doctorLogin': 'Doktor Girişi',
+      'turkish': 'Türkçe',
+      'english': 'English',
+    }
+  };
+
+  updateLanguageDisplay();
+</script>
+</body>
+</html>
