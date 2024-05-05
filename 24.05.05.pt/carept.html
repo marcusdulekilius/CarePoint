@@ -61,6 +61,43 @@
     width: 100px;
     height: auto;
   }
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 10px;
+    position: absolute;
+    z-index: 1;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent rgba(0, 0, 0, 0.7) transparent;
+  }
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    text-transform: capitalize;
+    font-style: italic;
+  }  
 </style>
 </head>
 <body>
@@ -71,7 +108,7 @@
   <ul class="nav-links">
     <li><a href="#">Ana Sayfa</a></li>
     <li><a href="#">Randevu Al</a></li>
-    <li><a href="https://www.instagram.com/marcusdulekilius/" target="_blank">Hakkımızda</a></li>
+    <li class="tooltip"><a href="https://www.instagram.com/marcusdulekilius/" target="_blank">Hakkımızda<span class="tooltiptext">Instagram'ımız</span></a></li>
     <li><a href="carepoint.html">Çıkış Yap</a></li>
   </ul>
 </div>
