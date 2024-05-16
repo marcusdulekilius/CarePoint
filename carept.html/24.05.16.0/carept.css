@@ -273,3 +273,12 @@ select {
   color: white;
   font-weight: bold;
 }
+.time-slot.available {
+  background-color: blue;
+  color: white;
+}
+
+.time-slot.disabled {
+  background-color: white;
+  color: black;
+}
