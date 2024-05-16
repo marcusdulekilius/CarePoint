@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CarePoint Hospital</title>
+<link rel="stylesheet" href="carept.css">
+
+</head>
+<body>
+  <div class="background-overlay"></div>
+  <div class="header">
+    <img src="C:\\Users\\dulek\\Downloads\\carepoint-logo.png" alt="CarePoint Logo" class="logo">
+    <h2 style="margin-left: 20px"><em>CarePoint Hospital</em></h2>
+    <ul class="nav-links">
+      <li><a href="#">Ana Sayfa</a></li>
+      <li><a href="#randevu-al">Randevu Al</a></li>
+      <li class="tooltip"><a href="https://www.instagram.com/marcusdulekilius/" target="_blank">Hakkımızda<span class="tooltiptext">Instagram'ımız</span></a></li>
+      <li><a href="carepoint.html">Çıkış Yap</a></li>
+    </ul>
+  </div>
+  
+  <div class="calendar-container" id="calendarContainer">
+    <h3>Randevu Tarihi Seçin</h3>
+    
+    <select id="department" onchange="generateDoctorOptions()">
+      <option value="">Bölüm Seçin</option>
+      <option value="Göz">Göz</option>
+      <option value="KBB">KBB</option>
+      <option value="Göğüs Hastalıkları">Göğüs Hastalıkları</option>
+      <option value="Dahiliye">Dahiliye</option>
+      <option value="Genel Cerrahi">Genel Cerrahi</option>
+    </select>
+    <select id="doctor" disabled onchange="generateTimeSlots()">
+      <option value="">Doktor Seçin</option>
+      <input type="date" id="appointmentDate" onchange="generateTimeSlots()">
+    </select>
+    <button onclick="requestAppointment()" id="requestButton" disabled>Randevu Talep Et</button>
+    <button onclick="hideCalendar()">Kapat</button>
+    <div id="doctorSlots" class="doctor-slots-container"></div>
+    <div id="timeSlots" class="time-slots-container"></div>
+  </div>
+  
+  <script src="carept.js"></script>
+</body>
+</html>
