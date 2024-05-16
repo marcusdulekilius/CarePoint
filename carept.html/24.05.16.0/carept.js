@@ -67,9 +67,9 @@ const doctors = [
       timeSlotContainer.innerHTML = '';
     
       const startTime = new Date(date);
-      startTime.setHours(9, 0, 0); // Start at 9:00 AM
+      startTime.setHours(9, 0, 0);
       const endTime = new Date(date);
-      endTime.setHours(17, 50, 0); // End at 5:50 PM
+      endTime.setHours(17, 50, 0);
     
       const timeSlots = [];
       const currentTime = new Date(startTime);
@@ -91,16 +91,25 @@ const doctors = [
           timeSlot.textContent = `${hour.toString().padStart(2, '0')}:${(i * 10).toString().padStart(2, '0')}`;
           timeSlot.className = 'time-slot';
           timeSlot.addEventListener('click', function() {
-            alert(`Randevu talebiniz alındı.\nTarih: ${date.toLocaleDateString('tr-TR')}\nDoktor: ${doctor}\nSaat: ${timeSlot.textContent}`);
-            hideCalendar();
+            if (!timeSlot.classList.contains('disabled')) {
+              alert(`Randevu talebiniz alındı.\nTarih: ${date.toLocaleDateString('tr-TR')}\nDoktor: ${doctor}\nSaat: ${timeSlot.textContent}`);
+              hideCalendar();
+            } else {
+              alert('Bu saat için randevu alınamaz.');
+            }
           });
+          if (Math.random() > 0.5) {
+            timeSlot.classList.add('available');
+          } else {
+            timeSlot.classList.add('disabled');
+          }
           minuteContainer.appendChild(timeSlot);
         }
         timeSlotGroup.appendChild(minuteContainer);
     
         timeSlotContainer.appendChild(timeSlotGroup);
     
-        currentTime.setHours(hour + 1, 0, 0); // Move to the next hour
+        currentTime.setHours(hour + 1, 0, 0);
       }
     }
   
